@@ -122,7 +122,7 @@ define MOD_LOCK
 		chmod 777 $(2)/$(1)_$(3).lock;
 	fi
 	$(eval $(1)_lock_fd=$(subst ~,_,$(subst -,_,$(subst +,_,$(subst .,_,$(1))))))
-	exec {$($(1)_lock_fd)}<"$(2)/$(1)_$(3).lock";
+	exec {$($(1)_lock_fd)}> "$(2)/$(1)_$(3).lock";
 	if ! flock -x -w $(4) "$${$($(1)_lock_fd)}" ; then
 		echo "ERROR: Lock timeout trying to access $(2)/$(1)_$(3).lock";
 		exit 1;
