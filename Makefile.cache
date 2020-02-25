@@ -4,7 +4,10 @@
 #   The term “Broadcom” refers to Broadcom Inc. and/or its subsidiaries.
 #
 #   Author: Kalimuthu Velappan
-#   Email: kalimuthu.velappan@broadcom.com
+#           Greg Paussa
+#
+#   Email : kalimuthu.velappan@broadcom.com
+#           greg.paussa@broadcom.com
 #  
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -62,8 +65,9 @@
 
 
 # Common files and FLAGS
+# Run the 'touch nocommon' command in the base directory to exclude the common files from caching
 SONIC_COMMON_FILES_LIST :=  $(if $(wildcard nocommon),, .platform slave.mk rules/functions Makefile.cache)
-SONIC_COMMON_FLAGS_LIST :=  $(CONFIGURED_PLATFORM) $(SONIC_DPKG_CACHE_METHOD) \
+SONIC_COMMON_FLAGS_LIST :=  $(CONFIGURED_PLATFORM) \
                             $(SONIC_DPKG_CACHE_SOURCE) $(SONIC_DEBUGGING_ON) \
                             $(SONIC_PROFILING_ON) $(SONIC_SANITIZER_ON)
 SONIC_COMMON_DPKG_LIST  :=  debian/control debian/changelog debian/rules \
@@ -85,7 +89,7 @@ endif
 endif
 
 $(info "SONIC_DPKG_CACHE_METHOD"         : "$(SONIC_DPKG_CACHE_METHOD)")
-ifeq ($(SONIC_DPKG_CACHE_METHOD),cache)
+ifneq ($(SONIC_DPKG_CACHE_METHOD),none)
 $(info "DPKG_CACHE_PATH"                 : "$(SONIC_DPKG_CACHE_SOURCE)")
 endif
 $(info )
@@ -99,7 +103,9 @@ SONIC_DPKG_CACHE_DIR    := /dpkg_cache
 MOD_CACHE_LOCK_SUFFIX   := cache_access
 MOD_CACHE_LOCK_TIMEOUT  := 3600
 SONIC_DPKG_LOCAL_CACHE_DIR=${TARGET_PATH}/cache
-$(shell test -d $(SONIC_DPKG_LOCAL_CACHE_DIR) || mkdir -p $(SONIC_DPKG_LOCAL_CACHE_DIR) )
+$(shell test -d $(SONIC_DPKG_LOCAL_CACHE_DIR) || \
+    mkdir -p $(SONIC_DPKG_LOCAL_CACHE_DIR) && chmod 777 $(SONIC_DPKG_LOCAL_CACHE_DIR) )
+$(shell test -w $(SONIC_DPKG_CACHE_DIR) || sudo chmod 777 $(SONIC_DPKG_CACHE_DIR) ) 
 
 DOCKER_LOCKFILE_SUFFIX  := access
 DOCKER_LOCKFILE_TIMEOUT := 1200
@@ -146,9 +152,12 @@ endef
 # Args:
 #  $(1)   => target name
 define GET_MOD_SHA
+	$(eval  $(1)_MOD_DEP_FILES := $($(1)_DEP_FLAGS_FILE) $($(1)_MOD_HASH_FILE) $($(1)_SMOD_HASH_FILE) )
+	$(if $(MDEBUG), $(info $(1)_MOD_DEP_FILES: $($(1)_MOD_DEP_FILES)))
 	$(eval $(1)_MOD_HASH    := $(if $(filter GIT_COMMIT_SHA,$($(1)_CACHE_MODE)),\
                             $(shell cd $($(1)_MOD_SRC_PATH) && git log -1 --format="%H"| awk '{print substr($$1,0,23);}' ),\
-                            $(shell git hash-object $($(1)_MOD_HASH_FILE) $($(1)_SMOD_HASH_FILE)| sha1sum | awk '{print substr($$1,0,23);}')))
+                            $(shell git hash-object $($(1)_MOD_DEP_FILES)| \
+                                   sha1sum | awk '{print substr($$1,0,23);}')))
 endef
 
 
@@ -162,9 +171,9 @@ define GET_MOD_DEP_SHA
                             $($(1)_DBG_DEPENDS) $($(1)_DBG_IMAGE_PACKAGES) $($(1)_LOAD_DOCKERS),\
                             $(if $($(dfile)_MAIN_DEB),$($(dfile)_MAIN_DEB),$(dfile))) )
 
-	$(if $(MDEBUG), $(info DEP_FILES: $($(1)_MOD_DEP_PKGS)))
-	$(eval $(1)_DEP_MOD_SHA := $(shell git hash-object $($(1)_DEP_FLAGS_FILE) \
-                            $(foreach dfile,$($(1)_MOD_DEP_PKGS),$($(dfile)_MOD_HASH_FILE) $($(dfile)_SMOD_HASH_FILE) ) \
+	$(if $(MDEBUG), $(info $(1)_MOD_DEP_PKGS: $($(1)_MOD_DEP_PKGS)))
+	$(eval $(1)_DEP_MOD_SHA := $(shell git hash-object  \
+                            $(foreach dfile,$($(1)_MOD_DEP_PKGS), $($(dfile)_DEP_FLAGS_FILE) $($(dfile)_MOD_HASH_FILE) $($(dfile)_SMOD_HASH_FILE) ) \
                             | sha1sum | awk '{print substr($$1,0,23);}'))
 endef
 
@@ -208,7 +217,7 @@ define LOAD_FROM_CACHE
 	$(call GET_MOD_SHA,$(1))
 
 	# Form the cache file name
-    $(eval $(1)_MOD_CACHE_FILE      := $(1)-$($(1)_DEP_MOD_SHA)-$($(1)_MOD_HASH).tgz)
+	$(eval $(1)_MOD_CACHE_FILE := $(1)-$($(1)_DEP_MOD_SHA)-$($(1)_MOD_HASH).tgz)
 	$(if $(MDEBUG), $(info MODE_CACHE_FILE := $($(1)_MOD_CACHE_FILE)))
 
 	# Retrive and log files list that are modified for the target.
@@ -222,14 +231,14 @@ define LOAD_FROM_CACHE
 	# 1. First load from Local cache path
 	# 2. If not, load from global cache path
 	$(eval CACHE_FILE_SELECT:=$(or $(wildcard $(SONIC_DPKG_LOCAL_CACHE_DIR)/$($(1)_MOD_CACHE_FILE)), \
-                                   $(wildcard $(SONIC_DPKG_CACHE_DIR)/$($(1)_MOD_CACHE_FILE))) )
+								$(wildcard $(SONIC_DPKG_CACHE_DIR)/$($(1)_MOD_CACHE_FILE))) )
 
 	# Check if any of the derived package is not built
 	$(eval LOAD_DRV_DEB := $(foreach pkg,$(addprefix $($(1)_DST_PATH)/,$(1) $($(1)_DERIVED_DEBS) $($(1)_EXTRA_DEBS)),$(if $(wildcard $(pkg)),,$(pkg))))
 
-	# Load the cache if cache is eanbled and cache file is present in the cache
+	# Load the cache if cache is enabled and cache file is present in the cache
 	# Update the cache_loaded variable
-	$(if $(and $(CACHE_FILE_SELECT),$(filter cache,$(SONIC_DPKG_CACHE_METHOD))),
+	$(if $(and $(CACHE_FILE_SELECT),$(filter $(RCACHE_OPTIONS),$(SONIC_DPKG_CACHE_METHOD))),
 		$(if $(LOAD_DRV_DEB), $($(1)_CACHE_USER) tar -C $($(1)_BASE_PATH) -mxzvf $(CACHE_FILE_SELECT) 1>> $($(1)_DST_PATH)/$(1).log ,echo );
 		echo "File $(CACHE_FILE_SELECT) is loaded from cache" >> $($(1)_DST_PATH)/$(1).log
 		$(eval $(1)_CACHE_LOADED := Yes)
@@ -248,13 +257,22 @@ endef
 # It saves the .deb into global cache only when its dependencies are not changed,
 #    Otherwise it saves the .deb into local cache
 # The cache save is protected with lock.
-# The SAVE_INTO_CACHE macro has dependecy with LOAD_FROM_CACHE macro
-#      The target specific variables -_MOD_SRC_PATH, _MOD_CACHE_FILE and _FILES_MODIFIED are
-#      derived from the LOAD_FROM_CACHE macro
 # Args:
 # $(1) => target name
 # $(2) => target output file name
 define SAVE_INTO_CACHE
+
+	# Calculate the modules SHA and its dependency SHA value
+	$(call GET_MOD_DEP_SHA,$(1))
+	$(call GET_MOD_SHA,$(1))
+
+	# Form the cache file name
+	$(eval $(1)_MOD_CACHE_FILE  := $(1)-$($(1)_DEP_MOD_SHA)-$($(1)_MOD_HASH).tgz)
+	$(if $(MDEBUG), $(info $(1)_MOD_CACHE_FILE := $($(1)_MOD_CACHE_FILE)))
+
+	# Retrive and log files list that are modified for the target.
+	$(call GET_MODIFIED_FILES,$(1))
+
 	$(eval MOD_CACHE_FILE=$($(1)_MOD_CACHE_FILE))
 	$(call MOD_LOCK,$(1),$(SONIC_DPKG_CACHE_DIR),$(MOD_CACHE_LOCK_SUFFIX),$(MOD_CACHE_LOCK_TIMEOUT))
 	$(if $($(1)_FILES_MODIFIED),
@@ -262,7 +280,7 @@ define SAVE_INTO_CACHE
 		$(eval $(1)_CACHE_DIR := $(SONIC_DPKG_LOCAL_CACHE_DIR))
 	 )
 	$($(1)_CACHE_USER) tar -C $($(1)_BASE_PATH) -mczvf $($(1)_CACHE_DIR)/$(MOD_CACHE_FILE) $(2) $(addprefix $($(1)_DST_PATH)/,$($(1)_DERIVED_DEBS) $($(1)_EXTRA_DEBS) )  \
-        1>>$($(1)_DST_PATH)/$(1).log
+		1>>$($(1)_DST_PATH)/$(1).log
 	sudo chmod 777 $($(1)_CACHE_DIR)/$(MOD_CACHE_FILE)
 
 	echo "File $($(1)_CACHE_DIR)/$(MOD_CACHE_FILE) saved in cache " >> $($(1)_DST_PATH)/$(1).log
@@ -271,11 +289,19 @@ define SAVE_INTO_CACHE
 	$(call MOD_UNLOCK,$(1))
 endef
 
-define CHECK_CACHE_ENABLED
-$(if $(and $(filter-out none,$(SONIC_DPKG_CACHE_METHOD)),$(filter-out none,$($(1)_CACHE_MODE))),enabled)
+# Read from the cache
+RCACHE_OPTIONS := cache rcache rwcache
+define CHECK_RCACHE_ENABLED
+$(if $(and $(filter $(RCACHE_OPTIONS),$(SONIC_DPKG_CACHE_METHOD)),$(filter-out none,$($(1)_CACHE_MODE))),enabled)
 endef
 
-# It logs the reason why target is getting build/rebuild
+# Write into the cache
+WCACHE_OPTIONS := cache wcache rwcache
+define CHECK_WCACHE_ENABLED
+$(if $(and $(filter $(WCACHE_OPTIONS),$(SONIC_DPKG_CACHE_METHOD)),$(filter-out none,$($(1)_CACHE_MODE))),enabled)
+endef
+
+# It logs the reason why the target is getting built/rebuilt
 # Args:
 # $(1) => target name
 define SHOW_WHY
@@ -284,7 +310,7 @@ define SHOW_WHY
 		$(eval $(1)_PREREQ_PHONY:= $(filter $(PHONY),$^))\
 		$(eval $(1)_PREREQ_DNE:= $(filter-out $(wildcard $^) $($(1)_PREREQ_PHONY),$^))\
 		$(eval $(1)_PREREQ_NEW:= $(filter-out $($(1)_PREREQ_DNE),$?))\
-		$(if $(wildcard $@),$(if $($(1)_PREREQ_NEW), NEWER PREREQUISITES: $($(1)_PREREQ_NEW)), $@ it does not exist)\
+		$(if $(wildcard $@),$(if $($(1)_PREREQ_NEW), NEWER PREREQUISITES: $($(1)_PREREQ_NEW)), $@ does not exist)\
 		$(if $($(1)_PREREQ_DNE),  NON-EXISTENT PREREQUISITES: $($(1)_PREREQ_DNE))\
 		$(if $($(1)_PREREQ_PHONY),  PHONY PREREQUISITES: $($(1)_PREREQ_PHONY)))"  >> $($(1)_DST_PATH)/$(1).log
 
@@ -304,7 +330,7 @@ endef
 # $(2) => target output file name
 define LOAD_CACHE
 	$(call SHOW_WHY,$(1))
-	$(if $(call CHECK_CACHE_ENABLED,$(1)), $(call LOAD_FROM_CACHE,$(1),$(2)) )
+	$(if $(call CHECK_RCACHE_ENABLED,$(1)), $(call LOAD_FROM_CACHE,$(1),$(2)) )
 endef
 
 
@@ -313,29 +339,35 @@ endef
 # $(1) => target name
 # $(2) => target output file name
 define SAVE_CACHE
-	$(if $(call CHECK_CACHE_ENABLED,$(1)), $(call SAVE_INTO_CACHE,$(1),$(2)))
+	$(if $(call CHECK_WCACHE_ENABLED,$(1)), $(call SAVE_INTO_CACHE,$(1),$(2)))
 endef
 
 
 
 # Set the target path for each target.
 $(foreach pkg, $(SONIC_MAKE_DEBS) $(SONIC_DPKG_DEBS) $(SONIC_ONLINE_DEBS) $(SONIC_COPY_DEBS), \
-        $(eval $(pkg)_DST_PATH := $(if $($(pkg)_DST_PATH), $($(pkg)_DST_PATH), $(DEBS_PATH))) )
+        $(eval $(pkg)_DST_PATH := $(if $($(pkg)_DST_PATH), $($(pkg)_DST_PATH), $(DEBS_PATH))) \
+		$(eval $(DEBS_PATH)/$(pkg)_TARGET := $(pkg)) )
 
 $(foreach pkg, $(SONIC_MAKE_FILES), \
-        $(eval $(pkg)_DST_PATH := $(if $($(pkg)_DST_PATH), $($(pkg)_DST_PATH), $(FILES_PATH))) )
+        $(eval $(pkg)_DST_PATH := $(if $($(pkg)_DST_PATH), $($(pkg)_DST_PATH), $(FILES_PATH))) \
+		$(eval $(FILES_PATH)/$(pkg)_TARGET := $(pkg)) )
 
 $(foreach pkg, $(SONIC_PYTHON_STDEB_DEBS), \
-        $(eval $(pkg)_DST_PATH := $(if $($(pkg)_DST_PATH), $($(pkg)_DST_PATH), $(PYTHON_DEBS_PATH))) )
+        $(eval $(pkg)_DST_PATH := $(if $($(pkg)_DST_PATH), $($(pkg)_DST_PATH), $(PYTHON_DEBS_PATH))) \
+		$(eval $(PYTHON_DEBS_PATH)/$(pkg)_TARGET := $(pkg)) )
 
 $(foreach pkg, $(SONIC_PYTHON_WHEELS), \
-        $(eval $(pkg)_DST_PATH := $(if $($(pkg)_DST_PATH), $($(pkg)_DST_PATH), $(PYTHON_WHEELS_PATH))) )
+        $(eval $(pkg)_DST_PATH := $(if $($(pkg)_DST_PATH), $($(pkg)_DST_PATH), $(PYTHON_WHEELS_PATH))) \
+		$(eval $(PYTHON_WHEELS_PATH)/$(pkg)_TARGET := $(pkg)) )
 
 $(foreach pkg, $(SONIC_DOCKER_IMAGES) $(SONIC_DOCKER_DBG_IMAGES), \
-        $(eval $(pkg)_DST_PATH := $(if $($(pkg)_DST_PATH), $($(pkg)_DST_PATH), $(TARGET_PATH))) )
+        $(eval $(pkg)_DST_PATH := $(if $($(pkg)_DST_PATH), $($(pkg)_DST_PATH), $(TARGET_PATH))) \
+		$(eval $(TARGET_PATH)/$(pkg)_TARGET := $(pkg)) )
 
 $(foreach pkg, $(SONIC_INSTALL_PKGS), \
-        $(eval $(pkg)_DST_PATH := $(if $($(pkg)_DST_PATH), $($(pkg)_DST_PATH), $(FSROOT_PATH))) )
+        $(eval $(pkg)_DST_PATH := $(if $($(pkg)_DST_PATH), $($(pkg)_DST_PATH), $(FSROOT_PATH))) \
+		$(eval $(FSROOT_PATH)/$(pkg)_TARGET := $(pkg)) )
 
 
 # define the DEP files(.dep and .smdep) and SHA files (.sha and smsha) for each target
@@ -423,6 +455,8 @@ $(foreach pkg, $(SONIC_MAKE_DEBS) $(SONIC_DPKG_DEBS) $(SONIC_ONLINE_DEBS) $(SONI
 #  $(1)  => target name
 #  $(2)  => target destination folder path
 #  $(3)  => target file extension
+#
+#  It updates the _DEP_FLAGS variable if there is any change in the module flags.
 
 define FLAGS_DEP_RULES
 ALL_DEP_FILES_LIST += $(foreach pkg,$(2), $(if $(filter none,$($(1)_CACHE_MODE)),$(addsuffix .$(3),$(addprefix $(pkg)/, $(1)))))
@@ -530,64 +564,64 @@ $(eval $(call SHA_DEP_RULES, $(SONIC_INSTALL_PKGS), $(FSROOT_PATH),dep))
 
 
 # Clean all the DEP and SHA files for all the DEBS target
-SONIC_CACHE_CLEAN_DEBS = $(addsuffix -cclean,$(addprefix $(DEBS_PATH)/, \
+SONIC_CACHE_CLEAN_DEBS = $(addsuffix -clean,$(addprefix $(DEBS_PATH)/, \
            $(SONIC_ONLINE_DEBS) \
            $(SONIC_COPY_DEBS) \
            $(SONIC_MAKE_DEBS) \
            $(SONIC_DPKG_DEBS) \
            $(SONIC_DERIVED_DEBS) \
            $(SONIC_EXTRA_DEBS)))
-$(SONIC_CACHE_CLEAN_DEBS) :: $(DEBS_PATH)/%-cclean : .platform $$(addsuffix -cclean,$$(addprefix $(DEBS_PATH)/,$$($$*_MAIN_DEB)))  \
-            $(DEBS_PATH)/%-clean
+$(SONIC_CACHE_CLEAN_DEBS) :: $(DEBS_PATH)/%-clean : .platform $$(addsuffix -clean,$$(addprefix $(DEBS_PATH)/,$$($$*_MAIN_DEB))) 
 	@rm -f $($*_DEP_FLAGS_FILE) $($*_MOD_HASH_FILE) $($*_SMOD_HASH_FILE) \
         $($*_MOD_DEP_FILE) $($*_SMOD_DEP_FILE)
 
 
 # Clean all the DEP and SHA files for all the FILES target
-SONIC_CACHE_CLEAN_FILES = $(addsuffix -cclean,$(addprefix $(FILES_PATH)/, \
+SONIC_CACHE_CLEAN_FILES = $(addsuffix -clean,$(addprefix $(FILES_PATH)/, \
            $(SONIC_ONLINE_FILES) \
            $(SONIC_COPY_FILES) \
            $(SONIC_MAKE_FILES)))
-$(SONIC_CACHE_CLEAN_FILES) :: $(FILES_PATH)/%-cclean : .platform $(FILES_PATH)/$$*-clean
+$(SONIC_CACHE_CLEAN_FILES) :: $(FILES_PATH)/%-clean : .platform 
 	@rm -f $($*_DEP_FLAGS_FILE) $($*_MOD_HASH_FILE) $($*_SMOD_HASH_FILE) \
         $($*_MOD_DEP_FILE) $($*_SMOD_DEP_FILE)
 
 
 # Clean all the DEP and SHA files for all the DOCKER target
-SONIC_CACHE_CLEAN_TARGETS = $(addsuffix -cclean,$(addprefix $(TARGET_PATH)/, \
+SONIC_CACHE_CLEAN_TARGETS = $(addsuffix -clean,$(addprefix $(TARGET_PATH)/, \
                $(SONIC_DOCKER_IMAGES) \
                $(SONIC_DOCKER_DBG_IMAGES) \
                $(SONIC_SIMPLE_DOCKER_IMAGES) \
                $(SONIC_INSTALLERS)))
-$(SONIC_CACHE_CLEAN_TARGETS) :: $(TARGET_PATH)/%-cclean : .platform $(TARGET_PATH)/$$*-clean
+$(SONIC_CACHE_CLEAN_TARGETS) :: $(TARGET_PATH)/%-clean : .platform 
 	@rm -f $($*_DEP_FLAGS_FILE) $($*_MOD_HASH_FILE) $($*_SMOD_HASH_FILE) \
         $($*_MOD_DEP_FILE) $($*_SMOD_DEP_FILE)
 
 
 # Clean all the DEP and SHA files for all the PYTHON DEBS target
-SONIC_CACHE_CLEAN_STDEB_DEBS = $(addsuffix -cclean,$(addprefix $(PYTHON_DEBS_PATH)/, \
+SONIC_CACHE_CLEAN_STDEB_DEBS = $(addsuffix -clean,$(addprefix $(PYTHON_DEBS_PATH)/, \
              $(SONIC_PYTHON_STDEB_DEBS)))
-$(SONIC_CACHE_CLEAN_STDEB_DEBS) :: $(PYTHON_DEBS_PATH)/%-cclean : .platform $(PYTHON_DEBS_PATH)/$$*-clean
+$(SONIC_CACHE_CLEAN_STDEB_DEBS) :: $(PYTHON_DEBS_PATH)/%-clean : .platform 
 	@rm -f $($*_DEP_FLAGS_FILE) $($*_MOD_HASH_FILE) $($*_SMOD_HASH_FILE) \
         $($*_MOD_DEP_FILE) $($*_SMOD_DEP_FILE)
 
 
 # Clean all the DEP and SHA files for all the PYTHON WHEELS target
-SONIC_CACHE_CLEAN_WHEELS = $(addsuffix -cclean,$(addprefix $(PYTHON_WHEELS_PATH)/, \
+SONIC_CACHE_CLEAN_WHEELS = $(addsuffix -clean,$(addprefix $(PYTHON_WHEELS_PATH)/, \
              $(SONIC_PYTHON_WHEELS)))
-$(SONIC_CACHE_CLEAN_WHEELS) :: $(PYTHON_WHEELS_PATH)/%-cclean : .platform $(PYTHON_WHEELS_PATH)/$$*-clean
+$(SONIC_CACHE_CLEAN_WHEELS) :: $(PYTHON_WHEELS_PATH)/%-clean : .platform 
 	@rm -f $($*_DEP_FLAGS_FILE) $($*_MOD_HASH_FILE) $($*_SMOD_HASH_FILE) \
         $($*_MOD_DEP_FILE) $($*_SMOD_DEP_FILE)
 
-cclean: $(SONIC_CACHE_CLEAN_DEBS) $(SONIC_CACHE_CLEAN_FILES) $(SONIC_CACHE_CLEAN_TARGETS) \
+.PHONY: cclean
+cclean:: $(SONIC_CACHE_CLEAN_DEBS) $(SONIC_CACHE_CLEAN_FILES) $(SONIC_CACHE_CLEAN_TARGETS) \
         $(SONIC_CACHE_CLEAN_STDEB_DEBS) $(SONIC_CACHE_CLEAN_WHEELS)
 
-.PHONY: cleanall
-cleanall: cclean clean
+.PHONY: clean 
+clean:: cclean
 
 # Clear all the local cache contents
-.PHONY:cclean
-cclean:
+.PHONY:lcclean
+lcclean::
 	@rm -f $(TARGET_PATH)/cache/*
 
 

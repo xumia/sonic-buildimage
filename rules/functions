@@ -95,7 +95,7 @@ endef
 # call:
 #     add_dbg_docker some_docker.gz, some-docker-dbg.gz
 define add_dbg_docker
-$(2)_PATH := $($(1)_PATH)
+$(2)_PATH = $($(1)_PATH)
 $(2)_DBG_DEPENDS += $($(1)_DBG_DEPENDS)
 $(2)_DBG_IMAGE_PACKAGES += $($(1)_DBG_IMAGE_PACKAGES)
 $(2)_PYTHON_WHEELS += $($(1)_PYTHON_WHEELS)
@@ -121,5 +121,3 @@ endef
 rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
 expand = $(foreach d,$(1),$(call expand,$($(d)_$(2)),$(2))) $(1)
-
-
