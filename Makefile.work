@@ -110,7 +110,7 @@ DOCKER_RUN := docker run --rm=true --privileged \
 include rules/config
 
 ifneq ($(SONIC_DPKG_CACHE_SOURCE),)
-    DOCKER_RUN += -v "$(SONIC_DPKG_CACHE_SOURCE):/dpkg_cache"
+	DOCKER_RUN += -v "$(SONIC_DPKG_CACHE_SOURCE):/dpkg_cache:rw"
 endif
 
 ifeq ($(SONIC_CONFIG_USE_NATIVE_DOCKERD_FOR_BUILD), y)

@@ -623,37 +623,37 @@ $(addprefix $(TARGET_PATH)/, $(DOCKER_IMAGES)) : $(TARGET_PATH)/%.gz : .platform
 	# Skip building the target if it is already loaded from cache
 	if [ -z '$($*.gz_CACHE_LOADED)' ] ; then
 
-	# Apply series of patches if exist
-	if [ -f $($*.gz_PATH).patch/series ]; then pushd $($*.gz_PATH) && QUILT_PATCHES=../$(notdir $($*.gz_PATH)).patch quilt push -a; popd; fi
-	mkdir -p $($*.gz_PATH)/debs $(LOG)
-	mkdir -p $($*.gz_PATH)/files $(LOG)
-	mkdir -p $($*.gz_PATH)/python-debs $(LOG)
-	mkdir -p $($*.gz_PATH)/python-wheels $(LOG)
-	sudo mount --bind $(DEBS_PATH) $($*.gz_PATH)/debs $(LOG)
-	sudo mount --bind $(FILES_PATH) $($*.gz_PATH)/files $(LOG)
-	sudo mount --bind $(PYTHON_DEBS_PATH) $($*.gz_PATH)/python-debs $(LOG)
-	sudo mount --bind $(PYTHON_WHEELS_PATH) $($*.gz_PATH)/python-wheels $(LOG)
-	# Export variables for j2. Use path for unique variable names, e.g. docker_orchagent_debs
-	$(eval export $(subst -,_,$(notdir $($*.gz_PATH)))_debs=$(shell printf "$(subst $(SPACE),\n,$(call expand,$($*.gz_DEPENDS),RDEPENDS))\n" | awk '!a[$$0]++'))
-	$(eval export $(subst -,_,$(notdir $($*.gz_PATH)))_pydebs=$(shell printf "$(subst $(SPACE),\n,$(call expand,$($*.gz_PYTHON_DEBS)))\n" | awk '!a[$$0]++'))
-	$(eval export $(subst -,_,$(notdir $($*.gz_PATH)))_whls=$(shell printf "$(subst $(SPACE),\n,$(call expand,$($*.gz_PYTHON_WHEELS)))\n" | awk '!a[$$0]++'))
-	$(eval export $(subst -,_,$(notdir $($*.gz_PATH)))_dbgs=$(shell printf "$(subst $(SPACE),\n,$(call expand,$($*.gz_DBG_PACKAGES)))\n" | awk '!a[$$0]++'))
-	j2 $($*.gz_PATH)/Dockerfile.j2 > $($*.gz_PATH)/Dockerfile
-	docker info $(LOG)
-	docker build --squash --no-cache \
-		--build-arg http_proxy=$(HTTP_PROXY) \
-		--build-arg https_proxy=$(HTTPS_PROXY) \
-		--build-arg user=$(USER) \
-		--build-arg uid=$(UID) \
-		--build-arg guid=$(GUID) \
-		--build-arg docker_container_name=$($*.gz_CONTAINER_NAME) \
-		--build-arg frr_user_uid=$(FRR_USER_UID) \
-		--build-arg frr_user_gid=$(FRR_USER_GID) \
-		--label Tag=$(SONIC_GET_VERSION) \
-		-t $* $($*.gz_PATH) $(LOG)
-	docker save $* | gzip -c > $@
-	# Clean up
-	if [ -f $($*.gz_PATH).patch/series ]; then pushd $($*.gz_PATH) && quilt pop -a -f; popd; fi
+		# Apply series of patches if exist
+		if [ -f $($*.gz_PATH).patch/series ]; then pushd $($*.gz_PATH) && QUILT_PATCHES=../$(notdir $($*.gz_PATH)).patch quilt push -a; popd; fi
+		mkdir -p $($*.gz_PATH)/debs $(LOG)
+		mkdir -p $($*.gz_PATH)/files $(LOG)
+		mkdir -p $($*.gz_PATH)/python-debs $(LOG)
+		mkdir -p $($*.gz_PATH)/python-wheels $(LOG)
+		sudo mount --bind $(DEBS_PATH) $($*.gz_PATH)/debs $(LOG)
+		sudo mount --bind $(FILES_PATH) $($*.gz_PATH)/files $(LOG)
+		sudo mount --bind $(PYTHON_DEBS_PATH) $($*.gz_PATH)/python-debs $(LOG)
+		sudo mount --bind $(PYTHON_WHEELS_PATH) $($*.gz_PATH)/python-wheels $(LOG)
+		# Export variables for j2. Use path for unique variable names, e.g. docker_orchagent_debs
+		$(eval export $(subst -,_,$(notdir $($*.gz_PATH)))_debs=$(shell printf "$(subst $(SPACE),\n,$(call expand,$($*.gz_DEPENDS),RDEPENDS))\n" | awk '!a[$$0]++'))
+		$(eval export $(subst -,_,$(notdir $($*.gz_PATH)))_pydebs=$(shell printf "$(subst $(SPACE),\n,$(call expand,$($*.gz_PYTHON_DEBS)))\n" | awk '!a[$$0]++'))
+		$(eval export $(subst -,_,$(notdir $($*.gz_PATH)))_whls=$(shell printf "$(subst $(SPACE),\n,$(call expand,$($*.gz_PYTHON_WHEELS)))\n" | awk '!a[$$0]++'))
+		$(eval export $(subst -,_,$(notdir $($*.gz_PATH)))_dbgs=$(shell printf "$(subst $(SPACE),\n,$(call expand,$($*.gz_DBG_PACKAGES)))\n" | awk '!a[$$0]++'))
+		j2 $($*.gz_PATH)/Dockerfile.j2 > $($*.gz_PATH)/Dockerfile
+		docker info $(LOG)
+		docker build --squash --no-cache \
+			--build-arg http_proxy=$(HTTP_PROXY) \
+			--build-arg https_proxy=$(HTTPS_PROXY) \
+			--build-arg user=$(USER) \
+			--build-arg uid=$(UID) \
+			--build-arg guid=$(GUID) \
+			--build-arg docker_container_name=$($*.gz_CONTAINER_NAME) \
+			--build-arg frr_user_uid=$(FRR_USER_UID) \
+			--build-arg frr_user_gid=$(FRR_USER_GID) \
+			--label Tag=$(SONIC_GET_VERSION) \
+			-t $* $($*.gz_PATH) $(LOG)
+		docker save $* | gzip -c > $@
+		# Clean up
+		if [ -f $($*.gz_PATH).patch/series ]; then pushd $($*.gz_PATH) && quilt pop -a -f; popd; fi
 		
 		# Save the target deb into DPKG cache
 		$(call SAVE_CACHE,$*.gz,$@)
@@ -676,25 +676,25 @@ $(addprefix $(TARGET_PATH)/, $(DOCKER_DBG_IMAGES)) : $(TARGET_PATH)/%-$(DBG_IMAG
 	# Skip building the target if it is already loaded from cache
 	if [ -z '$($*-$(DBG_IMAGE_MARK).gz_CACHE_LOADED)' ] ; then
 
-	mkdir -p $($*.gz_PATH)/debs $(LOG)
-	sudo mount --bind $(DEBS_PATH) $($*.gz_PATH)/debs $(LOG)
-	# Export variables for j2. Use path for unique variable names, e.g. docker_orchagent_debs
-	$(eval export $(subst -,_,$(notdir $($*.gz_PATH)))_dbg_debs=$(shell printf "$(subst $(SPACE),\n,$(call expand,$($*.gz_DBG_DEPENDS),RDEPENDS))\n" | awk '!a[$$0]++'))
-	$(eval export $(subst -,_,$(notdir $($*.gz_PATH)))_image_dbgs=$(shell printf "$(subst $(SPACE),\n,$(call expand,$($*.gz_DBG_IMAGE_PACKAGES)))\n" | awk '!a[$$0]++'))
-	./build_debug_docker_j2.sh $* $(subst -,_,$(notdir $($*.gz_PATH)))_dbg_debs $(subst -,_,$(notdir $($*.gz_PATH)))_image_dbgs > $($*.gz_PATH)/Dockerfile-dbg.j2
-	j2 $($*.gz_PATH)/Dockerfile-dbg.j2 > $($*.gz_PATH)/Dockerfile-dbg
-	docker info $(LOG)
-	docker build \
-		$(if $($*.gz_DBG_DEPENDS), --squash --no-cache, --no-cache) \
-		--build-arg http_proxy=$(HTTP_PROXY) \
-		--build-arg https_proxy=$(HTTPS_PROXY) \
-		--build-arg docker_container_name=$($*.gz_CONTAINER_NAME) \
-		--label Tag=$(SONIC_GET_VERSION) \
-		--file $($*.gz_PATH)/Dockerfile-dbg \
-		-t $*-dbg $($*.gz_PATH) $(LOG)
-	docker save $*-dbg | gzip -c > $@
-	# Clean up
-	if [ -f $($*.gz_PATH).patch/series ]; then pushd $($*.gz_PATH) && quilt pop -a -f; popd; fi
+		mkdir -p $($*.gz_PATH)/debs $(LOG)
+		sudo mount --bind $(DEBS_PATH) $($*.gz_PATH)/debs $(LOG)
+		# Export variables for j2. Use path for unique variable names, e.g. docker_orchagent_debs
+		$(eval export $(subst -,_,$(notdir $($*.gz_PATH)))_dbg_debs=$(shell printf "$(subst $(SPACE),\n,$(call expand,$($*.gz_DBG_DEPENDS),RDEPENDS))\n" | awk '!a[$$0]++'))
+		$(eval export $(subst -,_,$(notdir $($*.gz_PATH)))_image_dbgs=$(shell printf "$(subst $(SPACE),\n,$(call expand,$($*.gz_DBG_IMAGE_PACKAGES)))\n" | awk '!a[$$0]++'))
+		./build_debug_docker_j2.sh $* $(subst -,_,$(notdir $($*.gz_PATH)))_dbg_debs $(subst -,_,$(notdir $($*.gz_PATH)))_image_dbgs > $($*.gz_PATH)/Dockerfile-dbg.j2
+		j2 $($*.gz_PATH)/Dockerfile-dbg.j2 > $($*.gz_PATH)/Dockerfile-dbg
+		docker info $(LOG)
+		docker build \
+			$(if $($*.gz_DBG_DEPENDS), --squash --no-cache, --no-cache) \
+			--build-arg http_proxy=$(HTTP_PROXY) \
+			--build-arg https_proxy=$(HTTPS_PROXY) \
+			--build-arg docker_container_name=$($*.gz_CONTAINER_NAME) \
+			--label Tag=$(SONIC_GET_VERSION) \
+			--file $($*.gz_PATH)/Dockerfile-dbg \
+			-t $*-dbg $($*.gz_PATH) $(LOG)
+		docker save $*-dbg | gzip -c > $@
+		# Clean up
+		if [ -f $($*.gz_PATH).patch/series ]; then pushd $($*.gz_PATH) && quilt pop -a -f; popd; fi
 
 		# Save the target deb into DPKG cache
 		$(call SAVE_CACHE,$*-$(DBG_IMAGE_MARK).gz,$@)
@@ -872,12 +872,12 @@ SONIC_CLEAN_FILES = $(addsuffix -clean,$(addprefix $(FILES_PATH)/, \
 		   $(SONIC_COPY_FILES) \
 		   $(SONIC_MAKE_FILES)))
 
-$(SONIC_CLEAN_DEBS) : $(DEBS_PATH)/%-clean : .platform $$(addsuffix -clean,$$(addprefix $(DEBS_PATH)/,$$($$*_MAIN_DEB)))
+$(SONIC_CLEAN_DEBS) :: $(DEBS_PATH)/%-clean : .platform $$(addsuffix -clean,$$(addprefix $(DEBS_PATH)/,$$($$*_MAIN_DEB)))
 	@# remove derived or extra targets if main one is removed, because we treat them
 	@# as part of one package
 	@rm -f $(addprefix $(DEBS_PATH)/, $* $($*_DERIVED_DEBS) $($*_EXTRA_DEBS))
 
-$(SONIC_CLEAN_FILES) : $(FILES_PATH)/%-clean : .platform
+$(SONIC_CLEAN_FILES) :: $(FILES_PATH)/%-clean : .platform
 	@rm -f $(FILES_PATH)/$*
 
 SONIC_CLEAN_TARGETS += $(addsuffix -clean,$(addprefix $(TARGET_PATH)/, \
@@ -885,23 +885,23 @@ SONIC_CLEAN_TARGETS += $(addsuffix -clean,$(addprefix $(TARGET_PATH)/, \
 		       $(SONIC_DOCKER_DBG_IMAGES) \
 		       $(SONIC_SIMPLE_DOCKER_IMAGES) \
 		       $(SONIC_INSTALLERS)))
-$(SONIC_CLEAN_TARGETS) : $(TARGET_PATH)/%-clean : .platform
+$(SONIC_CLEAN_TARGETS) :: $(TARGET_PATH)/%-clean : .platform
 	@rm -f $(TARGET_PATH)/$*
 
 SONIC_CLEAN_STDEB_DEBS = $(addsuffix -clean,$(addprefix $(PYTHON_DEBS_PATH)/, \
 		     $(SONIC_PYTHON_STDEB_DEBS)))
-$(SONIC_CLEAN_STDEB_DEBS) : $(PYTHON_DEBS_PATH)/%-clean : .platform
+$(SONIC_CLEAN_STDEB_DEBS) :: $(PYTHON_DEBS_PATH)/%-clean : .platform
 	@rm -f $(PYTHON_DEBS_PATH)/$*
 
 SONIC_CLEAN_WHEELS = $(addsuffix -clean,$(addprefix $(PYTHON_WHEELS_PATH)/, \
 		     $(SONIC_PYTHON_WHEELS)))
-$(SONIC_CLEAN_WHEELS) : $(PYTHON_WHEELS_PATH)/%-clean : .platform
+$(SONIC_CLEAN_WHEELS) :: $(PYTHON_WHEELS_PATH)/%-clean : .platform
 	@rm -f $(PYTHON_WHEELS_PATH)/$*
 
-clean-logs : .platform
+clean-logs :: .platform
 	@rm -f $(TARGET_PATH)/*.log $(DEBS_PATH)/*.log $(FILES_PATH)/*.log $(PYTHON_DEBS_PATH)/*.log $(PYTHON_WHEELS_PATH)/*.log
 
-clean : .platform clean-logs $$(SONIC_CLEAN_DEBS) $$(SONIC_CLEAN_FILES) $$(SONIC_CLEAN_TARGETS) $$(SONIC_CLEAN_STDEB_DEBS) $$(SONIC_CLEAN_WHEELS)
+clean :: .platform clean-logs $$(SONIC_CLEAN_DEBS) $$(SONIC_CLEAN_FILES) $$(SONIC_CLEAN_TARGETS) $$(SONIC_CLEAN_STDEB_DEBS) $$(SONIC_CLEAN_WHEELS)
 
 ###############################################################################
 ## all
