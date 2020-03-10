@@ -65,8 +65,8 @@
 
 
 # Common files and FLAGS
-# Run the 'touch nocommon' command in the base directory to exclude the common files from caching
-SONIC_COMMON_FILES_LIST :=  $(if $(wildcard nocommon),, .platform slave.mk rules/functions Makefile.cache)
+# Run the 'touch cache.skip.common' command in the base directory to exclude the common files from caching
+SONIC_COMMON_FILES_LIST :=  $(if $(wildcard cache.skip.common),, .platform slave.mk rules/functions Makefile.cache)
 SONIC_COMMON_FLAGS_LIST :=  $(CONFIGURED_PLATFORM) \
                             $(SONIC_DPKG_CACHE_SOURCE) $(SONIC_DEBUGGING_ON) \
                             $(SONIC_PROFILING_ON) $(SONIC_SANITIZER_ON)
@@ -128,7 +128,7 @@ define MOD_LOCK
 		chmod 777 $(2)/$(1)_$(3).lock;
 	fi
 	$(eval $(1)_lock_fd=$(subst ~,_,$(subst -,_,$(subst +,_,$(subst .,_,$(1))))))
-	exec {$($(1)_lock_fd)}<"$(2)/$(1)_$(3).lock";
+	exec {$($(1)_lock_fd)}<>"$(2)/$(1)_$(3).lock";
 	if ! flock -x -w $(4) "$${$($(1)_lock_fd)}" ; then
 		echo "ERROR: Lock timeout trying to access $(2)/$(1)_$(3).lock";
 		exit 1;
@@ -218,7 +218,7 @@ define LOAD_FROM_CACHE
 
 	# Form the cache file name
 	$(eval $(1)_MOD_CACHE_FILE := $(1)-$($(1)_DEP_MOD_SHA)-$($(1)_MOD_HASH).tgz)
-	$(if $(MDEBUG), $(info MODE_CACHE_FILE := $($(1)_MOD_CACHE_FILE)))
+	$(if $(MDEBUG), $(info $(1)_MODE_CACHE_FILE := $($(1)_MOD_CACHE_FILE)))
 
 	# Retrive and log files list that are modified for the target.
 	$(call GET_MODIFIED_FILES,$(1))
