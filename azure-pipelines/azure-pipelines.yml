@@ -13,6 +13,11 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
+- bash: |
+    git remote add azure https://github.com/Azure/sonic-buildimage
+    git merge azure/master
+  displayName: 'Test variables 1'
+
 - script: |
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
