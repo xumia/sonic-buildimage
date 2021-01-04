@@ -6,8 +6,8 @@
 trigger:
 - main
 
-pool:
-  vmImage: 'ubuntu-latest'
+pool: sonic-mirror-build-2
+  #vmImage: 'ubuntu-latest'
 
 steps:
 - script: echo Hello, world!
