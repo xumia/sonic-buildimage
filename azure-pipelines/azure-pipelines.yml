@@ -14,12 +14,28 @@ steps:
   displayName: 'Run a one-line script'
 
 - bash: |
+    if [ -z "$(which gh)" ]; then
+      sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+      sudo apt-add-repository https://cli.github.com/packages
+       sudo apt update
+      sudo apt install gh
+    fi
+  displayName: 'Install gh'
+- bash: |
+    git clone -b repd https://github.com/xumia/sonic-buildimage-2
+    cd sonic-buildimage-2
     git remote add azure https://github.com/Azure/sonic-buildimage
     git branch -vv
+    git config credential.https://github.com.username $GIT_USER
+    export GIT_ASKPASS=../git_env_password.sh
     git checkout repd
     git pull --all
     echo "git merge azure/master"
     git merge azure/master
+    git push
+  env:
+    GIT_USER: $(GIT_USER)
+    GIT_PASSWORD: $(GIT_PASSWORD)
   displayName: 'Merge azure/sonic-buildimage master branch'
 
 - script: |
