@@ -15,8 +15,9 @@ steps:
 
 - bash: |
     git remote add azure https://github.com/Azure/sonic-buildimage
+    git pull --all
     git merge azure/master
-  displayName: 'Test variables 1'
+  displayName: 'Merge azure/sonic-buildimage master branch"
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
