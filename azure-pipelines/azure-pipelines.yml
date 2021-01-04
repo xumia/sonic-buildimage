@@ -16,6 +16,7 @@ steps:
 - bash: |
     git remote add azure https://github.com/Azure/sonic-buildimage
     git branch -vv
+    git checkout repd
     git pull --all
     echo "git merge azure/master"
     git merge azure/master
