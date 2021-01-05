@@ -26,6 +26,7 @@ steps:
     cd sonic-buildimage-2
     git remote add azure https://github.com/Azure/sonic-buildimage
     git branch -vv
+    git config user.name $GIT_USER
     git config credential.https://github.com.username $GIT_USER
     export GIT_ASKPASS=../git_env_password.sh
     git checkout repd
