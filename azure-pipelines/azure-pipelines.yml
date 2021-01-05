@@ -6,7 +6,7 @@
 trigger:
 - main
 
-pool: sonic-mirror-build-2
+pool: sonic-mirror-build
   #vmImage: 'ubuntu-latest'
 
 steps:
