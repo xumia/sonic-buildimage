@@ -22,6 +22,7 @@ steps:
     fi
   displayName: 'Install gh'
 - bash: |
+    [ -d sonic-buildimage-2 ] && rm -rf sonic-buildimage-2
     git clone -b repd https://github.com/xumia/sonic-buildimage-2
     cd sonic-buildimage-2
     git remote add azure https://github.com/Azure/sonic-buildimage
