@@ -17,7 +17,7 @@ itsdangerous==1.1.0
 j2cli==0.3.10
 Jinja2==2.11.2
 jsonschema==3.2.0
-lxml==4.6.1
+lxml==4.6.2
 MarkupSafe==1.1.1
 natsort==6.2.1
 netaddr==0.8.0
