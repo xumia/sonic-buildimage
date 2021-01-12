@@ -80,6 +80,7 @@ sonic-mgmt-framework==1.0-01
 syncd==1.0.0
 thrift-compiler==0.11.0-4
 wayland-protocols==1.17-1
+wpasupplicant==2:2.9.0-14
 x11proto-composite-dev==1:2018.4-4
 x11proto-input-dev==2018.4-4
 x11proto-randr-dev==2018.4-4

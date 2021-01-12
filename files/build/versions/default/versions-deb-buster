@@ -138,6 +138,7 @@ libpcap0.8==1.8.1-6
 libpci3==1:3.5.2-1
 libpcre2-16-0==10.32-5
 libpcre2-8-0==10.32-5
+libpcsclite1==1.8.24-1
 libperl5.28==5.28.1-6+deb10u1
 libpgm-5.2-0==5.2.122~dfsg-3
 libpixman-1-0==0.36.0-1
@@ -298,6 +299,8 @@ vim-common==2:8.1.0875-5
 vim-runtime==2:8.1.0875-5
 vim-tiny==2:8.1.0875-5
 wget==1.20.1-1.1
+wpasupplicant==2:2.9.0-14
+wpasupplicant-dbgsym==2:2.9.0-14
 xxd==2:8.1.0875-5
 xz-utils==5.2.4-1
 zlib1g-dev==1:1.2.11.dfsg-1

@@ -14,7 +14,7 @@ http://http.debian.net/debian/pool/main/h/hiredis/hiredis_0.14.0.orig.tar.gz==10
 http://security.debian.org/debian-security/pool/updates/main/l/linux/linux_4.19.118-2+deb10u1.debian.tar.xz==5ed5360704d2addae3a0a08b5fdec438
 http://security.debian.org/debian-security/pool/updates/main/l/linux/linux_4.19.118-2+deb10u1.dsc==b83432bce17ce82303c8eb3bc263b2f8
 http://security.debian.org/debian-security/pool/updates/main/l/linux/linux_4.19.118.orig.tar.xz==12f0a53ac0579cb01404de3bc62224c3
-https://chrome-infra-packages.appspot.com/client?platform=linux-amd64&version=git_revision:61ac72e84956112656e2500701dd252c5d92f6e6==fd8f277b2275ebb4de7b79e2c4e714bf
+https://chrome-infra-packages.appspot.com/client?platform=linux-amd64&version=git_revision:61ac72e84956112656e2500701dd252c5d92f6e6==92fa3480d8ef7b67fec08eab9d578a93
 https://download.docker.com/linux/debian/gpg==1afae06b34a13c1b3d9cb61a26285a15
 https://github.com/aristanetworks/sonic-firmware/raw/78a3df2/phy/phy-credo_1.0_amd64.deb==8c23751610adb1d3ea97536864d33902
 https://github.com/CumulusNetworks/ifupdown2/archive/1.2.8-1.tar.gz==0fb58823345a2adb0270d4e194d1dc57
