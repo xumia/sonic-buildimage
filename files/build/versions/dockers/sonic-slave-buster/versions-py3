@@ -23,6 +23,7 @@ Jinja2==2.10
 keyring==17.1.1
 keyrings.alt==3.1.1
 lxml==4.6.2
+M2Crypto==0.37.1
 MarkupSafe==1.1.0
 mmh3==2.5.1
 mock==2.0.0
@@ -31,6 +32,7 @@ more-itertools==4.2.0
 nose2==0.8.0
 olefile==0.46
 packaging==19.0
+parameterized==0.8.1
 pbr==4.2.0
 pexpect==4.8.0
 Pillow==5.4.1
