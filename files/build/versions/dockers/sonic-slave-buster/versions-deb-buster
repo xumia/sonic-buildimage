@@ -31,7 +31,6 @@ binutils-common==2.31.1-16
 binutils-x86-64-linux-gnu==2.31.1-16
 bison==2:3.3.2.dfsg-1
 blt==2.5.3+dfsg-4
-blt-dev==2.5.3+dfsg-4
 bsd-mailx==8.1.2-0.20180807cvs-1
 bsdmainutils==11.1.2+b1
 build-essential==12.6
@@ -274,7 +273,6 @@ libbinutils==2.31.1-16
 libbison-dev==2:3.3.2.dfsg-1
 libbit-vector-perl==7.4-1+b5
 libblkid-dev==2.33.1-0.1
-libbluetooth-dev==5.50-1.2~deb10u1
 libbluetooth3==5.50-1.2~deb10u1
 libbluray2==1:1.1.0-1
 libboost-all-dev==1.67.0.1
@@ -384,7 +382,6 @@ libbz2-dev==1.0.6-9.2~deb10u1
 libc-ares-dev==1.14.0-1
 libc-ares2==1.14.0-1
 libc-dev-bin==2.28-10
-libc-l10n==2.28-10
 libc6-dbg==2.28-10
 libc6-dev==2.28-10
 libc6-dev-i386==2.28-10
@@ -544,11 +541,9 @@ libflite1==2.1-release-3
 libfont-afm-perl==1.20-2
 libfontbox2-java==2.0.13-2
 libfontconfig1==2.13.1-2
-libfontconfig1-dev==2.13.1-2
 libfontenc1==1:1.1.3-1+b2
 libfop-java==1:2.3-2
 libfreetype6==2.9.1-3+deb10u2
-libfreetype6-dev==2.9.1-3+deb10u2
 libfribidi0==1.0.5-3.1+deb10u1
 libfstrm0==0.4.0-1
 libfuture-perl==0.39-1
@@ -560,7 +555,6 @@ libgcc-8-dev==8.3.0-6
 libgd-perl==2.71-2
 libgd3==2.2.5-5.2
 libgdbm-compat4==1.18.1-4
-libgdbm-dev==1.18.1-4
 libgdbm6==1.18.1-4
 libgdk-pixbuf2.0-0==2.38.1+dfsg-1
 libgdk-pixbuf2.0-bin==2.38.1+dfsg-1
@@ -808,7 +802,6 @@ libmoo-perl==2.003004-2
 libmount-dev==2.33.1-0.1
 libmp3lame0==3.100-2+b1
 libmpc3==1.1.0-1
-libmpdec-dev==2.4.2-2
 libmpdec2==2.4.2-2
 libmpeg2-4==0.5.1-8
 libmpfr6==4.0.2-1
@@ -822,7 +815,6 @@ libnanomsg5==1.1.5+dfsg-1
 libncurses-dev==6.1+20181013-2+deb10u2
 libncurses5-dev==6.1+20181013-2+deb10u2
 libncurses6==6.1+20181013-2+deb10u2
-libncursesw5-dev==6.1+20181013-2+deb10u2
 libnet-dbus-perl==1.1.0-5+b1
 libnet-dns-perl==1.19-1
 libnet-dns-sec-perl==1.11-1
@@ -942,7 +934,6 @@ libplexus-utils2-java==3.1.1-1
 libplexus-velocity-java==1.2-3
 libpmix2==3.1.2-3
 libpng-dev==1.6.36-6
-libpng-tools==1.6.36-6
 libpng16-16==1.6.36-6
 libpod-constants-perl==0.19-1
 libpolkit-agent-1-0==0.105-25
@@ -1090,7 +1081,6 @@ libsoxr0==0.1.2-3
 libspeex1==1.2~rc1.2-1+b2
 libspice-server1==0.14.0-1.3+deb10u1
 libsqlite3-0==3.27.2-3+deb10u1
-libsqlite3-dev==3.27.2-3+deb10u1
 libsratom-0-0==0.6.0~dfsg0-1
 libssh-gcrypt-4==0.8.7-1+deb10u1
 libssh2-1==1.8.0-2.1
@@ -1289,14 +1279,11 @@ libxext-dev==2:1.3.3-1+b2
 libxext6==2:1.3.3-1+b2
 libxfixes-dev==1:5.0.3-1
 libxfixes3==1:5.0.3-1
-libxfont2==1:2.0.3-1
-libxft-dev==2.3.2-2
 libxft2==2.3.2-2
 libxi6==2:1.7.9-1
 libxinerama1==2:1.1.4-2
 libxkbcommon-x11-0==0.8.2-1
 libxkbcommon0==0.8.2-1
-libxkbfile1==1:1.0.9-2+b11
 libxml-commons-external-java==1.4.01-3
 libxml-commons-resolver1.1-java==1.2-9
 libxml-libxml-perl==2.0134+dfsg-1
@@ -1317,12 +1304,10 @@ libxmu6==2:1.1.2-2+b3
 libxmuu1==2:1.1.2-2+b3
 libxpm4==1:3.5.12-1
 libxrandr2==2:1.5.1-1
-libxrender-dev==1:0.9.10-1
 libxrender1==1:0.9.10-1
 libxshmfence-dev==1.3-1
 libxshmfence1==1.3-1
 libxslt1.1==1.1.32-2.2~deb10u1
-libxss-dev==1:1.2.3-1
 libxss1==1:1.2.3-1
 libxt-dev==1:1.1.5-1+b3
 libxt6==1:1.1.5-1+b3
@@ -1357,7 +1342,6 @@ llvm-7==1:7.0.1-8+deb10u2
 llvm-7-dev==1:7.0.1-8+deb10u2
 llvm-7-runtime==1:7.0.1-8+deb10u2
 lmodern==2.004.5-6
-locales==2.28-10
 logrotate==3.14.0-4
 lsb-base==10.2019051400
 lsb-release==10.2019051400
@@ -1387,7 +1371,6 @@ mpi-default-bin==1.13
 mpi-default-dev==1.13
 mysql-common==5.8+1.0.5
 ncurses-term==6.1+20181013-2+deb10u2
-net-tools==1.60+git20180626.aebd88e-1
 netbase==5.6
 netpbm==2:10.0-15.3+b2
 nettle-dev==3.4.1-1
@@ -1686,7 +1669,6 @@ sgml-base==1.29
 sgml-data==2.0.11
 sgmlspl==1.03ii-36
 shared-mime-info==1.10-1
-sharutils==1:4.15.2-4
 shellcheck==0.5.0-3
 software-properties-common==0.96.20.2-2
 sphinx-common==1.8.4-1
@@ -1701,9 +1683,7 @@ systemd==241-7~deb10u5
 systemd-sysv==241-7~deb10u5
 t1utils==1.41-3
 tcl==8.6.9+1
-tcl-dev==8.6.9+1
 tcl8.6==8.6.9+dfsg-2
-tcl8.6-dev==8.6.9+dfsg-2
 teckit==2.5.8+ds2-5
 telnet==0.17-41.2
 tex-common==6.11
@@ -1722,13 +1702,10 @@ texlive-pictures==2018.20190227-2
 texlive-plain-generic==2018.20190227-2
 texlive-xetex==2018.20190227-2
 thin-provisioning-tools==0.7.6-2.1
-time==1.7-25.1+b1
 tipa==2:1.3-20
 tk==8.6.9+1
-tk-dev==8.6.9+1
 tk8.6==8.6.9-2
 tk8.6-blt2.5==2.5.3+dfsg-4
-tk8.6-dev==8.6.9-2
 ucf==3.0038+nmu1
 unattended-upgrades==1.11.2
 unzip==6.0-23+deb10u1
@@ -1743,13 +1720,11 @@ wdiff==1.2.2-2+b1
 wget==1.20.1-1.1
 x11-common==1:7.7+19
 x11-utils==7.7+4
-x11-xkb-utils==7.7+4
 x11-xserver-utils==7.7+8
 x11proto-core-dev==2018.4-4
 x11proto-damage-dev==1:2018.4-4
 x11proto-dev==2018.4-4
 x11proto-fixes-dev==1:2018.4-4
-x11proto-scrnsaver-dev==2018.4-4
 x11proto-xext-dev==2018.4-4
 x11proto-xf86vidmode-dev==2018.4-4
 xauth==1:1.0.10-1
@@ -1758,17 +1733,14 @@ xdelta==1.1.3-9.2
 xdelta3==3.0.11-dfsg-1+b1
 xdg-user-dirs==0.17-2
 xdg-utils==1.1.3-1+deb10u1
-xfonts-base==1:1.0.5
 xfonts-encodings==1:1.0.4-2
 xfonts-utils==1:7.7+6
 xkb-data==2.26-2
 xml-core==0.18+nmu1
 xorg-sgml-doctools==1:1.11-1
-xserver-common==2:1.20.4-1+deb10u2
 xsltproc==1.1.32-2.2~deb10u1
 xterm==344-1
 xtrans-dev==1.3.5-1
-xvfb==2:1.20.4-1+deb10u2
 xxd==2:8.1.0875-5
 xz-utils==5.2.4-1
 zip==3.0-11+b1
