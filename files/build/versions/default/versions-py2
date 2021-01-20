@@ -17,7 +17,7 @@ ptf==0.9.1
 pyang==2.4.0
 pyangbind==0.6.0
 pycparser==2.20
-PyYAML==5.3.1
+PyYAML==5.4
 redis==3.5.3
 redis-dump-load==1.1
 scandir==1.10.0
