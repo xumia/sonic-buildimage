@@ -236,7 +236,7 @@ sonic-host-services-data==1.0-1
 sonic-utilities-data==1.0-1
 sqlite3==3.27.2-3+deb10u1
 squashfs-tools==1:4.3-12
-sudo==1.8.27-1+deb10u2
+sudo==1.8.27-1+deb10u3
 sysfsutils==2.1.0+repack-5
 systemd==241-7~deb10u5
 systemd-sonic-generator==1.0.0

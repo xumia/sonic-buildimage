@@ -1613,7 +1613,7 @@ sphinx-rtd-theme-common==0.4.3+dfsg-1
 squashfs-tools==1:4.3-12
 stgit==0.18-1
 strace==4.26-0.2
-sudo==1.8.27-1+deb10u2
+sudo==1.8.27-1+deb10u3
 swig==3.0.12-2
 swig3.0==3.0.12-2
 systemd==241-7~deb10u5
