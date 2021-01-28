@@ -1408,7 +1408,7 @@ sphinx-rtd-theme-common==0.1.9-1
 squashfs-tools==1:4.3-3+deb9u1
 stgit==0.17.1-1
 strace==4.15-2
-sudo==1.8.19p1-2.1+deb9u2
+sudo==1.8.19p1-2.1+deb9u3
 swig==3.0.10-1.1
 swig3.0==3.0.10-1.1
 systemd==232-25+deb9u12
