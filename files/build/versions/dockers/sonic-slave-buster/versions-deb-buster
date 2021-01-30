@@ -37,7 +37,7 @@ build-essential==12.6
 byacc==20140715-1+b1
 bzip2==1.0.6-9.2~deb10u1
 bzip2-doc==1.0.6-9.2~deb10u1
-ca-certificates==20200601~deb10u1
+ca-certificates==20200601~deb10u2
 ca-certificates-java==20190405
 cdbs==0.4.159
 cgroupfs-mount==1.4

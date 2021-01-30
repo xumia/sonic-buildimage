@@ -31,7 +31,7 @@ pyroute2==0.5.14
 pyrsistent==0.17.3
 python-arptable==0.0.2
 python-dateutil==2.6.0
-PyYAML==5.3.1
+PyYAML==5.4.1
 redis==3.5.3
 redis-dump-load==1.1
 regex==2020.11.13
