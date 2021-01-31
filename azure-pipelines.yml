@@ -31,9 +31,14 @@ stages:
     timeoutInMinutes: 600
     steps:
     - checkout: self
+      clean: true
       submodules: recursive
       displayName: 'Checkout code'
-
+    - script: |
+         git submodule foreach --recursive git clean -xfdf
+         git submodule foreach --recursive git reset --hard
+         git submodule update --init --recursive
+      displayName: 'reset submodules'
     - script: |
         sudo modprobe overlay
         CACHE_OPTIONS="SONIC_DPKG_CACHE_METHOD=rcache SONIC_DPKG_CACHE_SOURCE=/nfs/dpkg_cache/broadcom"
@@ -51,9 +56,15 @@ stages:
     timeoutInMinutes: 600
     steps:
     - checkout: self
+      clean: true
       submodules: recursive
       displayName: 'Checkout code'
 
+    - script: |
+         git submodule foreach --recursive git clean -xfdf
+         git submodule foreach --recursive git reset --hard
+         git submodule update --init --recursive
+      displayName: 'reset submodules'
     - script: |
         sudo modprobe overlay
         CACHE_OPTIONS="SONIC_DPKG_CACHE_METHOD=rcache SONIC_DPKG_CACHE_SOURCE=/nfs/dpkg_cache/mellanox"
@@ -71,9 +82,15 @@ stages:
     timeoutInMinutes: 600
     steps:
     - checkout: self
+      clean: true
       submodules: recursive
       displayName: 'Checkout code'
 
+    - script: |
+         git submodule foreach --recursive git clean -xfdf
+         git submodule foreach --recursive git reset --hard
+         git submodule update --init --recursive
+      displayName: 'reset submodules'
     - script: |
         echo $(Build.BuildNumber)
         sudo modprobe overlay
