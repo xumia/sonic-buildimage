@@ -662,9 +662,9 @@ libmagickwand-6.q16-3==8:6.9.7.4+dfsg-11+deb9u11
 libmail-sendmail-perl==0.79.16-2
 libmailtools-perl==2.18-1
 libmailutils5==1:3.1.1-1
-libmariadbclient-dev==10.1.47-0+deb9u1
-libmariadbclient-dev-compat==10.1.47-0+deb9u1
-libmariadbclient18==10.1.47-0+deb9u1
+libmariadbclient-dev==10.1.48-0+deb9u1
+libmariadbclient-dev-compat==10.1.48-0+deb9u1
+libmariadbclient18==10.1.48-0+deb9u1
 libmaven-ant-tasks-java==2.1.3-4
 libmaven-archiver-java==2.6-3
 libmaven-clean-plugin-java==2.5-1

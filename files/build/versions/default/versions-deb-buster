@@ -248,8 +248,10 @@ python-dev==2.7.16-1
 python-minimal==2.7.16-1
 python-pip==18.1-5
 python-pip-whl==18.1-5
+python-pkg-resources==40.8.0-1
 python-ptf==0.9-1
 python-scapy==2.4.0-2
+python-setuptools==40.8.0-1
 python-smbus==4.1-1
 python-swsscommon==1.0.0
 python2==2.7.16-1

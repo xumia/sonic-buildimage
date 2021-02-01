@@ -15,7 +15,7 @@ inflection==0.5.1
 ipaddress==1.0.23
 itsdangerous==1.1.0
 j2cli==0.3.10
-Jinja2==2.11.2
+Jinja2==2.11.3
 jsonschema==3.2.0
 lxml==4.6.2
 MarkupSafe==1.1.1

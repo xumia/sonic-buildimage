@@ -6,12 +6,13 @@ functools32==3.2.3.post2
 future==0.18.2
 importlib-resources==3.3.1
 ipaddress==1.0.23
-Jinja2==2.11.2
+Jinja2==2.11.3
 jsonschema==2.6.0
 lxml==4.6.2
 MarkupSafe==1.1.1
 natsort==6.2.1
 netaddr==0.8.0
+nnpy==1.4.2
 pathlib2==2.3.5
 ptf==0.9.1
 pyang==2.4.0
