@@ -108,8 +108,8 @@ libkeyutils1==1.6-6
 libkmod2==26-1
 libkrb5-3==1.17-3+deb10u1
 libkrb5support0==1.17-3+deb10u1
-libldap-2.4-2==2.4.47+dfsg-3+deb10u4
-libldap-common==2.4.47+dfsg-3+deb10u4
+libldap-2.4-2==2.4.47+dfsg-3+deb10u5
+libldap-common==2.4.47+dfsg-3+deb10u5
 liblognorm5==2.0.5-1
 liblsan0==8.3.0-6
 liblua5.1-0==5.1.5-8.1+b2
