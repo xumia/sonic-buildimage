@@ -71,7 +71,7 @@ default-jdk-headless==2:1.11-71
 default-jre==2:1.11-71
 default-jre-headless==2:1.11-71
 default-libmysqlclient-dev==1.0.5
-device-tree-compiler==1.4.7-3
+device-tree-compiler==1.4.7-4
 devscripts==2.19.5+deb10u1
 dh-apparmor==2.13.2-10
 dh-autoreconf==19
@@ -113,7 +113,7 @@ exim4-daemon-light==4.92-8+deb10u4
 expat==2.2.6-2+deb10u1
 exuberant-ctags==1:5.9~svn20110310-12
 fakeroot==1.23-1
-file==1:5.35-4+deb10u1
+file==1:5.35-4+deb10u2
 flex==2.6.4-6.2
 fontconfig==2.13.1-2
 fontconfig-config==2.13.1-2
@@ -187,6 +187,7 @@ imagemagick-6.q16==8:6.9.10.23+dfsg-2.1+deb10u1
 install-info==6.5.0.dfsg.1-4+b1
 intel-media-va-driver==18.4.1+dfsg1-1
 intltool-debian==0.35.0+20060710.5
+iproute2==4.20.0-2+deb10u1
 iptables==1.8.2-4
 iptables-dev==1.8.2-4
 ipxe-qemu==1.0.0+git-20190125.36a4c85-1
@@ -330,8 +331,8 @@ libc6-x32==2.28-10
 libcaca0==0.99.beta19-2.1
 libcacard0==1:2.6.1-1
 libcaf-openmpi-3==2.4.0-2
-libcairo-gobject2==1.16.0-4
-libcairo2==1.16.0-4
+libcairo-gobject2==1.16.0-4+deb10u1
+libcairo2==1.16.0-4+deb10u1
 libcap-dev==1:2.25-2
 libcap-ng-dev==0.7.9-2
 libcapstone3==4.0.1+really+3.0.5-1
@@ -461,7 +462,7 @@ libfabric1==1.6.2-3
 libfakeroot==1.23-1
 libfastjson4==0.99.8-2
 libfcgi-perl==0.78-2+b3
-libfdt1==1.4.7-3
+libfdt1==1.4.7-4
 libffi-dev==3.2.1-9
 libfftw3-double3==3.3.8-2
 libfile-basedir-perl==0.08-1
@@ -529,10 +530,11 @@ libglx0==1.1.0-1
 libgme0==0.6.2-1
 libgmp-dev==2:6.1.2+dfsg-4
 libgmpxx4ldbl==2:6.1.2+dfsg-4
-libgnutls-dane0==3.6.7-4+deb10u5
-libgnutls-openssl27==3.6.7-4+deb10u5
-libgnutls28-dev==3.6.7-4+deb10u5
-libgnutlsxx28==3.6.7-4+deb10u5
+libgnutls-dane0==3.6.7-4+deb10u6
+libgnutls-openssl27==3.6.7-4+deb10u6
+libgnutls28-dev==3.6.7-4+deb10u6
+libgnutls30==3.6.7-4+deb10u6
+libgnutlsxx28==3.6.7-4+deb10u6
 libgomp1==8.3.0-6
 libgoogle-perftools4==2.7-1
 libgpgme11==1.12.0-6
@@ -705,8 +707,8 @@ liblwres161==1:9.11.5.P4+dfsg-5.1+deb10u2
 liblzma-dev==5.2.4-1
 liblzo2-2==2.10-0.1
 liblzo2-dev==2.10-0.1
-libmagic-mgc==1:5.35-4+deb10u1
-libmagic1==1:5.35-4+deb10u1
+libmagic-mgc==1:5.35-4+deb10u2
+libmagic1==1:5.35-4+deb10u2
 libmagickcore-6.q16-6==8:6.9.10.23+dfsg-2.1+deb10u1
 libmagickcore-6.q16-6-extra==8:6.9.10.23+dfsg-2.1+deb10u1
 libmagickwand-6.q16-6==8:6.9.10.23+dfsg-2.1+deb10u1
@@ -782,7 +784,7 @@ libnorm-dev==1.5.8+dfsg2-1
 libnorm1==1.5.8+dfsg2-1
 libnpth0==1.6-1
 libnspr4==2:4.20-1
-libnss-systemd==241-7~deb10u5
+libnss-systemd==241-7~deb10u6
 libnss3==2:3.42.1-1+deb10u3
 libnuma-dev==2.0.12-1
 libnuma1==2.0.12-1
@@ -817,7 +819,7 @@ libp11-kit0==0.23.15-2+deb10u1
 libpackage-stash-perl==0.38-1
 libpackage-stash-xs-perl==0.29-1
 libpackagekit-glib2-18==1.1.12-5
-libpam-systemd==241-7~deb10u5
+libpam-systemd==241-7~deb10u6
 libpam0g-dev==1.3.1-5
 libpango-1.0-0==1.42.4-8~deb10u1
 libpangocairo-1.0-0==1.42.4-8~deb10u1
@@ -1005,9 +1007,9 @@ libsnappy-java==1.1.7.2-1
 libsnappy-jni==1.1.7.2-1
 libsnappy1v5==1.1.7-1
 libsndfile1==1.0.28-6
-libsnmp-base==5.7.3+dfsg-5+deb10u1
-libsnmp-dev==5.7.3+dfsg-5+deb10u1
-libsnmp30==5.7.3+dfsg-5+deb10u1
+libsnmp-base==5.7.3+dfsg-5+deb10u2
+libsnmp-dev==5.7.3+dfsg-5+deb10u2
+libsnmp30==5.7.3+dfsg-5+deb10u2
 libsoap-lite-perl==1.27-1
 libsodium-dev==1.0.17-1
 libsodium23==1.0.17-1
@@ -1046,7 +1048,8 @@ libswresample3==7:4.1.6-1~deb10u1
 libswscale5==7:4.1.6-1~deb10u1
 libsynctex2==2018.20181218.49446-1
 libsys-hostname-long-perl==1.5-1
-libsystemd-dev==241-7~deb10u5
+libsystemd-dev==241-7~deb10u6
+libsystemd0==241-7~deb10u6
 libtag1v5==1.11.1+dfsg.1-0.3+deb10u1
 libtag1v5-vanilla==1.11.1+dfsg.1-0.3+deb10u1
 libtask-weaken-perl==1.06-1
@@ -1086,7 +1089,8 @@ libtype-tiny-xs-perl==0.014-1+b1
 libtypes-serialiser-perl==1.0-1
 libubsan1==8.3.0-6
 libuchardet0==0.0.6-3
-libudev-dev==241-7~deb10u5
+libudev-dev==241-7~deb10u6
+libudev1==241-7~deb10u6
 libunbound8==1.9.0-2+deb10u2
 libunicode-utf8-perl==0.62-1
 libunwind-dev==1.2.1-10~deb10u1
@@ -1325,7 +1329,7 @@ openssh-client==1:7.9p1-10+deb10u2
 openssh-server==1:7.9p1-10+deb10u2
 openssh-sftp-server==1:7.9p1-10+deb10u2
 openssl==1.1.1d-0+deb10u4
-ovmf==0~20181115.85588389-3+deb10u2
+ovmf==0~20181115.85588389-3+deb10u3
 packagekit==1.1.12-5
 packagekit-tools==1.1.12-5
 patch==2.7.6-3+deb10u1
@@ -1616,8 +1620,8 @@ strace==4.26-0.2
 sudo==1.8.27-1+deb10u3
 swig==3.0.12-2
 swig3.0==3.0.12-2
-systemd==241-7~deb10u5
-systemd-sysv==241-7~deb10u5
+systemd==241-7~deb10u6
+systemd-sysv==241-7~deb10u6
 t1utils==1.41-3
 tcl==8.6.9+1
 tcl8.6==8.6.9+dfsg-2
@@ -1645,7 +1649,7 @@ tk8.6==8.6.9-2
 tk8.6-blt2.5==2.5.3+dfsg-4
 ucf==3.0038+nmu1
 unattended-upgrades==1.11.2
-unzip==6.0-23+deb10u1
+unzip==6.0-23+deb10u2
 uuid-dev==2.33.1-0.1
 va-driver-all==2.4.0-1
 vdpau-driver-all==1.1.1-10
