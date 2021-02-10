@@ -6,7 +6,8 @@ certifi==2020.12.5
 cffi==1.14.4
 chardet==3.0.4
 Click==7.0
-cryptography==3.4.3
+cryptography==3.4.4
+dbus-python==1.2.16
 docker==4.3.1
 idna==2.10
 ijson==2.6.1
@@ -26,13 +27,16 @@ psutil==5.8.0
 ptyprocess==0.7.0
 pyang==2.4.0
 pyangbind==0.8.1
+pycairo==1.20.0
 pycparser==2.20
+PyGObject==3.38.0
 python-dateutil==2.8.1
 PyYAML==5.4.1
 redis==3.5.3
 regex==2020.11.13
 requests==2.25.0
 six==1.15.0
+systemd-python==234
 tabulate==0.8.2
 urllib3==1.26.3
 watchdog==0.10.3
