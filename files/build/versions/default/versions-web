@@ -16,7 +16,7 @@ https://download.docker.com/linux/debian/gpg==1afae06b34a13c1b3d9cb61a26285a15
 https://github.com/aristanetworks/sonic-firmware/raw/78a3df2/phy/phy-credo_1.0_amd64.deb==f0d5b5efa18cf775cdc3fccaba7ac181
 https://github.com/CumulusNetworks/ifupdown2/archive/1.2.8-1.tar.gz==12f45e90d23178e96cf70f68dc9455e6
 https://github.com/nanomsg/nanomsg/archive/1.0.0.tar.gz==6f56ef28c93cee644e8c4aaaef7cfb55
-https://raw.githubusercontent.com/p4lang/ptf/master/ptf_nn/ptf_nn_agent.py==9555bba8fc4e7428bb7176168bfcbac7
+https://raw.githubusercontent.com/p4lang/ptf/master/ptf_nn/ptf_nn_agent.py==628956b660575965429cec84b1778816
 https://repo1.maven.org/maven2/io/swagger/swagger-codegen-cli/2.4.5/swagger-codegen-cli-2.4.5.jar==219f1453ff22482d9e080effbfa7fa81
 https://sonicstorage.blob.core.windows.net/debian-security/pool/updates/main/l/linux/linux_4.19.152-1.debian.tar.xz==875d84b0edad0210c090195a8df4eb6c
 https://sonicstorage.blob.core.windows.net/debian-security/pool/updates/main/l/linux/linux_4.19.152-1.dsc==e76d5deda89795939828c3b39b31d38f
