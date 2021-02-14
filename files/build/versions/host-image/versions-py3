@@ -6,7 +6,7 @@ certifi==2020.12.5
 cffi==1.14.5
 chardet==3.0.4
 Click==7.0
-cryptography==3.4.4
+cryptography==3.4.5
 dbus-python==1.2.16
 docker==4.3.1
 idna==2.10
